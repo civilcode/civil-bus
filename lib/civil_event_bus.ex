@@ -1,18 +1,41 @@
 defmodule CivilEventBus do
   @moduledoc """
-  Documentation for CivilEventBus.
+  An event bus. A facade for `CivilEventBus.Behaviour`.
   """
 
-  @doc """
-  Hello world.
+  @behaviour CivilEventBus.Behaviour
 
-  ## Examples
+  @impl true
+  def start_link(opts \\ []) do
+    impl().start_link(opts)
+  end
 
-      iex> CivilEventBus.hello()
-      :world
+  @impl true
+  def subscribe(channel) do
+    impl().subscribe(channel)
+  end
 
-  """
-  def hello do
-    :world
+  @impl true
+  def subscriber?(channel, subscriber) do
+    impl().subscriber?(channel, subscriber)
+  end
+
+  @impl true
+  def publish(channel, event) do
+    impl().publish(channel, event)
+  end
+
+  def handle_info({:events, events}, state) do
+    for event <- events, do: send(self(), {:event, event.data})
+
+    {:noreply, state}
+  end
+
+  def handle_info(message, state) do
+    {:noreply, state}
+  end
+
+  defp impl() do
+    Application.get_env(:event_bus, :impl, CivilEventBus.EventStore)
   end
 end
