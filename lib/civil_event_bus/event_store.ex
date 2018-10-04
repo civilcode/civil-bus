@@ -14,7 +14,7 @@ defmodule CivilEventBus.EventStore do
   def subscribe(channel) do
     subscription_name = "subscription_#{inspect(self())}"
 
-    {:ok, subscription} =
+    {:ok, _subscription} =
       EventStore.subscribe_to_stream(to_string(channel), subscription_name, self())
 
     :ok

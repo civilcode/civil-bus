@@ -16,11 +16,6 @@ defmodule CivilEventBus do
   end
 
   @impl true
-  def subscriber?(channel, subscriber) do
-    impl().subscriber?(channel, subscriber)
-  end
-
-  @impl true
   def publish(channel, event) do
     impl().publish(channel, event)
   end
@@ -31,7 +26,7 @@ defmodule CivilEventBus do
     {:noreply, state}
   end
 
-  def handle_info(message, state) do
+  def handle_info(_message, state) do
     {:noreply, state}
   end
 
