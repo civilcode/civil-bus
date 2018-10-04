@@ -25,13 +25,13 @@ defmodule CivilEventBusTest do
         100 -> IO.puts("no event received")
       end
 
-      assert_received {:event, %MyEvent{}}
+      assert_receive {:event, %MyEvent{}}
     end
 
     test "subscribes to another channel does not receive the event" do
       :ok = CivilEventBus.subscribe(:my_channel)
       :ok = CivilEventBus.publish(:another_channel, %MyEvent{})
-      refute_received {:event, %MyEvent{}}
+      refute_receive {:event, %MyEvent{}}
     end
   end
 end
