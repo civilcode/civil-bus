@@ -26,7 +26,7 @@ defmodule CivilEventBus.EventStore do
       %EventStore.EventData{
         event_type: to_string(event.__struct__),
         data: event
-}
+      }
     ]
 
     :ok = EventStore.append_to_stream(to_string(channel), :any_version, events)
