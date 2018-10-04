@@ -24,7 +24,7 @@ defmodule CivilEventBus.Registry do
   @impl true
   def publish(channel, event) do
     Registry.dispatch(__MODULE__, channel, fn entries ->
-      for {pid, _} <- entries, do: send(pid, event)
+      for {pid, _} <- entries, do: send(pid, {:events, [%{data: event}]})
     end)
 
     :ok

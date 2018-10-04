@@ -10,7 +10,7 @@ defmodule CivilEventBusTest do
   end
 
   defmodule MyEvent do
-    defstruct foo: :bar
+    defstruct data: "important data"
   end
 
   describe "publishing" do
@@ -19,8 +19,10 @@ defmodule CivilEventBusTest do
       :ok = CivilEventBus.publish(:my_channel, %MyEvent{})
 
       receive do
-        {:events, _} = msg ->
-          _ = CivilEventBus.handle_info(msg, nil)
+        {:events, _events} = msg ->
+          CivilEventBus.handle_info(msg, nil)
+      after
+        100 -> IO.puts("no event received")
       end
 
       assert_received {:event, %MyEvent{}}
