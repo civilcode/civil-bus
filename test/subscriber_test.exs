@@ -41,7 +41,7 @@ defmodule SubscriberTest do
 
       :ok = CivilEventBus.publish(:my_channel, %MyEvent{})
 
-      assert TestSubscriber.received?(subscriber, %MyEvent{})
+      assert event_received?(subscriber, %MyEvent{})
     end
 
     test "two subscribers receive an event" do
@@ -50,8 +50,23 @@ defmodule SubscriberTest do
 
       :ok = CivilEventBus.publish(:my_channel, %MyEvent{})
 
-      assert TestSubscriber.received?(subscriber_1, %MyEvent{})
-      assert TestSubscriber.received?(subscriber_2, %MyEvent{})
+      assert event_received?(subscriber_1, %MyEvent{})
+      assert event_received?(subscriber_2, %MyEvent{})
     end
+  end
+
+  defp event_received?(subscriber, event, time_passed \\ 0, timeout \\ 200, delay \\ 10) do
+    is_received = is_event_received?(subscriber, event)
+
+    if is_received && time_passed < timeout do
+      Process.sleep(delay)
+      event_received?(subscriber, event, time_passed + delay)
+    else
+      is_received
+    end
+  end
+
+  defp is_event_received?(subscriber, event) do
+    TestSubscriber.received?(subscriber, event)
   end
 end
