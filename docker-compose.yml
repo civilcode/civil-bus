@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10.4
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: eventstore_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /pgdata
+    volumes:
+      - pgdata:/pgdata
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Mount the application: allows us to update files on the host without copying them into the image
+      - .:/app
+      # Let Docker persist dependencies and builds:
+      # * if we blow away Docker this can be easily recreated
+      # * it keeps all build concerns separate from the host operating system
+      # * for compiled dependencies, stop conflicts with different host OS
+      # * maps to a subset of directories in .gitignore
+      - _build:/app/_build
+      - deps:/app/deps
+    depends_on:
+      - db
+    tty: true
+
+# volumes defined for use in above configuration
+volumes:
+  _build:
+  deps:
+  pgdata:

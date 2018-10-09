@@ -11,12 +11,13 @@ jobs:
       - image: circleci/elixir:1.7.3
       - image: circleci/postgres:10.5
         environment:
+          POSTGRES_DB: eventstore_test
           POSTGRES_USER: postgres
-          POSTGRES_DB: eventstore_dev
           POSTGRES_PASSWORD: postgres
     working_directory: ~/repo
     steps:
       - checkout
+      - run: cp config/test.circle.exs config/test.exs
       - run: mix do local.hex --force, local.rebar --force
       - restore_cache: # restore saved dependency cache
           keys:
