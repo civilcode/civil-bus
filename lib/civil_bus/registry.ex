@@ -1,9 +1,9 @@
-defmodule CivilEventBus.Registry do
+defmodule CivilBus.Registry do
   @moduledoc """
-  Registry implementation for the CivilEventBus.
+  Registry implementation for the CivilBus.
   """
 
-  @behaviour CivilEventBus.Behaviour
+  @behaviour CivilBus.Behaviour
 
   @impl true
   def start_link(_opts \\ []) do

@@ -1,8 +1,8 @@
 defmodule SubscriberTest do
-  use CivilEventBus.TestCase
+  use CivilBus.TestCase
 
   setup do
-    {:ok, pid} = CivilEventBus.start_link()
+    {:ok, pid} = CivilBus.start_link()
 
     on_exit(fn -> assert_down(pid) end)
 
@@ -14,7 +14,7 @@ defmodule SubscriberTest do
   end
 
   defmodule TestSubscriber do
-    use CivilEventBus.Subscriber, channel: :my_channel
+    use CivilBus.Subscriber, channel: :my_channel
 
     def received?(subscriber, event) do
       GenServer.call(subscriber, {:received?, event})
@@ -39,7 +39,7 @@ defmodule SubscriberTest do
     test "receives an event" do
       {:ok, subscriber} = TestSubscriber.start_link()
 
-      :ok = CivilEventBus.publish(:my_channel, %MyEvent{})
+      :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
       TestSubscriber.received?(subscriber, %MyEvent{})
     end
@@ -48,7 +48,7 @@ defmodule SubscriberTest do
       {:ok, subscriber_1} = TestSubscriber.start_link()
       {:ok, subscriber_2} = TestSubscriber.start_link()
 
-      :ok = CivilEventBus.publish(:my_channel, %MyEvent{})
+      :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
       TestSubscriber.received?(subscriber_1, %MyEvent{})
       TestSubscriber.received?(subscriber_2, %MyEvent{})

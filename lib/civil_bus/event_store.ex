@@ -1,9 +1,9 @@
-defmodule CivilEventBus.EventStore do
+defmodule CivilBus.EventStore do
   @moduledoc """
-  EventStore implementation for the CivilEventBus.
+  EventStore implementation for the CivilBus.
   """
 
-  @behaviour CivilEventBus.Behaviour
+  @behaviour CivilBus.Behaviour
 
   @impl true
   def start_link(_opts \\ []) do

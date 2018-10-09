@@ -1,9 +1,9 @@
-defmodule CivilEventBus do
+defmodule CivilBus do
   @moduledoc """
-  An event bus. A facade for `CivilEventBus.Behaviour`.
+  An event bus. A facade for `CivilBus.Behaviour`.
   """
 
-  @behaviour CivilEventBus.Behaviour
+  @behaviour CivilBus.Behaviour
 
   @impl true
   def start_link(opts \\ []) do
@@ -31,7 +31,7 @@ defmodule CivilEventBus do
   end
 
   defp impl() do
-    Application.get_env(:event_bus, :impl, CivilEventBus.EventStore)
-    # Application.get_env(:event_bus, :impl, CivilEventBus.Registry)
+    Application.get_env(:event_bus, :impl, CivilBus.EventStore)
+    # Application.get_env(:event_bus, :impl, CivilBus.Registry)
   end
 end

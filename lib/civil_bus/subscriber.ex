@@ -1,4 +1,4 @@
-defmodule CivilEventBus.Subscriber do
+defmodule CivilBus.Subscriber do
   @moduledoc false
 
   defmacro __using__(opts) do
@@ -10,7 +10,7 @@ defmodule CivilEventBus.Subscriber do
       end
 
       def init(:ok) do
-        CivilEventBus.subscribe(unquote(opts[:channel]))
+        CivilBus.subscribe(unquote(opts[:channel]))
 
         {:ok, nil}
       end
@@ -20,7 +20,7 @@ defmodule CivilEventBus.Subscriber do
       end
 
       def handle_info(message, state) do
-        CivilEventBus.handle_info(message, state)
+        CivilBus.handle_info(message, state)
       end
     end
   end

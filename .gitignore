@@ -20,4 +20,4 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-civil_event_bus-*.tar
+civil_bus-*.tar

@@ -1,6 +1,6 @@
-defmodule CivilEventBus.Behaviour do
+defmodule CivilBus.Behaviour do
   @moduledoc """
-  Defines the behaviour for CivilEventBus implementations.
+  Defines the behaviour for CivilBus implementations.
   """
 
   @type channel :: atom

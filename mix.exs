@@ -1,9 +1,9 @@
-defmodule CivilEventBus.MixProject do
+defmodule CivilBus.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :civil_event_bus,
+      app: :civil_bus,
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
@@ -18,7 +18,7 @@ defmodule CivilEventBus.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {CivilEventBus.Application, []}
+      mod: {CivilBus.Application, []}
     ]
   end
 

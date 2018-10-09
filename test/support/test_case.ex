@@ -1,11 +1,11 @@
-defmodule CivilEventBus.TestCase do
+defmodule CivilBus.TestCase do
   @moduledoc false
 
   use ExUnit.CaseTemplate
 
   using do
     quote do
-      import CivilEventBus.TestCase
+      import CivilBus.TestCase
 
       def assert_down(pid) do
         ref = Process.monitor(pid)
