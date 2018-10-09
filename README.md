@@ -15,7 +15,11 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/civil_bus](https://hexdocs.pm/civil_bus).
+## Setup
 
+    git clone https://github.com/civilcode/civil-bus.git
+    cd civil-bus
+    docker-compose up -d
+    docker-compose exec -e MIX_ENV=test application mix deps.get
+    docker-compose exec -e MIX_ENV=test application mix do event_store.create, event_store.init
+    docker-compose exec application mix test
