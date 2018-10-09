@@ -22,10 +22,10 @@ defmodule CivilBusTest do
         {:events, _events} = msg ->
           CivilBus.handle_info(msg, nil)
       after
-        100 -> IO.puts("no event received")
+        180 -> IO.puts("no event received")
       end
 
-      assert_receive {:event, %MyEvent{}}
+      assert_receive {:event, %MyEvent{}}, 200
     end
 
     test "subscribes to another channel does not receive the event" do
