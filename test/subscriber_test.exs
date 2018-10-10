@@ -1,57 +1,33 @@
-defmodule SubscriberTest do
-  use CivilBus.TestCase
+defmodule CivilBus.Registry.SubscriberTest do
+  use CivilBus.SubscriberTestCase
 
   setup do
-    {:ok, pid} = CivilBus.start_link()
+    default_implementation = Application.get_env(:event_bus, :impl)
+    Application.put_env(:event_bus, :impl, CivilBus.Registry)
 
-    on_exit(fn -> assert_down(pid) end)
+    on_exit(fn -> Application.put_env(:event_bus, :impl, default_implementation) end)
 
     :ok
   end
 
-  defmodule MyEvent do
-    defstruct data: "event data"
+  test "running against correct implementation" do
+    assert Application.get_env(:event_bus, :impl) == CivilBus.Registry
+  end
+end
+
+defmodule CivilBus.EventStore.SubscriberTest do
+  use CivilBus.SubscriberTestCase
+
+  setup do
+    default_implementation = Application.get_env(:event_bus, :impl)
+    Application.put_env(:event_bus, :impl, CivilBus.EventStore)
+
+    on_exit(fn -> Application.put_env(:event_bus, :impl, default_implementation) end)
+
+    :ok
   end
 
-  defmodule TestSubscriber do
-    use CivilBus.Subscriber, channel: :my_channel
-
-    def received?(subscriber, event) do
-      GenServer.call(subscriber, {:received?, event})
-    end
-
-    def handle_event(event, nil), do: handle_event(event, [])
-
-    def handle_event(event, state) do
-      {:noreply, [event | state]}
-    end
-
-    def handle_call({:received?, event}, from, nil) do
-      handle_call({:received?, event}, from, [])
-    end
-
-    def handle_call({:received?, event}, _from, state) do
-      {:reply, Enum.member?(state, event), state}
-    end
-  end
-
-  describe "receiving" do
-    test "receives an event" do
-      {:ok, subscriber} = TestSubscriber.start_link()
-
-      :ok = CivilBus.publish(:my_channel, %MyEvent{})
-
-      TestSubscriber.received?(subscriber, %MyEvent{})
-    end
-
-    test "two subscribers receive an event" do
-      {:ok, subscriber_1} = TestSubscriber.start_link()
-      {:ok, subscriber_2} = TestSubscriber.start_link()
-
-      :ok = CivilBus.publish(:my_channel, %MyEvent{})
-
-      TestSubscriber.received?(subscriber_1, %MyEvent{})
-      TestSubscriber.received?(subscriber_2, %MyEvent{})
-    end
+  test "running against correct implementation" do
+    assert Application.get_env(:event_bus, :impl) == CivilBus.EventStore
   end
 end
