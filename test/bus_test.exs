@@ -13,6 +13,8 @@ defmodule CivilBusTest do
     defstruct data: "important data"
   end
 
+  @assert_timeout 200
+
   describe "publishing" do
     test "subscribes to the same channel receives the event" do
       :ok = CivilBus.subscribe(:my_channel)
@@ -22,10 +24,10 @@ defmodule CivilBusTest do
         {:events, _events} = msg ->
           CivilBus.handle_info(msg, nil)
       after
-        180 -> IO.puts("no event received")
+        @assert_timeout - 20 -> IO.puts("no event received")
       end
 
-      assert_receive {:event, %MyEvent{}}, 200
+      assert_receive {:event, %{data: %MyEvent{}}}, @assert_timeout
     end
 
     test "subscribes to another channel does not receive the event" do

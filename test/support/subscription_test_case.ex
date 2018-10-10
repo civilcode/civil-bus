@@ -2,14 +2,6 @@ defmodule CivilBus.SubscriptionTestCase do
   import CivilBus.SharedTestCase
 
   define_tests do
-    setup do
-      {:ok, pid} = CivilBus.start_link()
-
-      on_exit(fn -> assert_down(pid) end)
-
-      :ok
-    end
-
     defmodule MyEvent do
       defstruct data: "event data"
     end
@@ -23,8 +15,9 @@ defmodule CivilBus.SubscriptionTestCase do
         TestSubscriber.add_notifier(subscriber, self())
 
         :ok = CivilBus.publish(:my_channel, %MyEvent{})
-        
+
         assert_receive {^subscriber, %MyEvent{}}
+        assert_receive {^subscriber, :acknowledged}, 200
       end
 
       test "two subscribers receive an event" do
@@ -36,7 +29,9 @@ defmodule CivilBus.SubscriptionTestCase do
         :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
         assert_receive {^subscriber_1, %MyEvent{}}
+        assert_receive {^subscriber_1, :acknowledged}, 200
         assert_receive {^subscriber_2, %MyEvent{}}
+        assert_receive {^subscriber_2, :acknowledged}, 200
       end
     end
   end

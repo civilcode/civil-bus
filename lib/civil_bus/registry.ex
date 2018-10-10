@@ -29,4 +29,9 @@ defmodule CivilBus.Registry do
 
     :ok
   end
+
+  @impl true
+  def ack(channel, event) do
+    :ok
+  end
 end

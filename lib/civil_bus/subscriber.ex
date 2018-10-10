@@ -15,16 +15,21 @@ defmodule CivilBus.Subscriber do
         {:ok, init_state()}
       end
 
-      # {:event, EventStore.EventDate}
-      def handle_info({:event, event}, state) do
-        application_event = CivilBus.get_application_event(event) # delegate EventStore/Register
-        
-        handle_event(application_event, state)
-        
-        CivilBus.ack(unquote(opts[:channel]), event)
+      def handle_info({:subscribed, _pid}, state) do
+        {:noreply, state}
       end
 
-      def handle_info(message, state) do
+      def handle_info({:event, event}, state) do
+        result = handle_event(event.data, state)
+
+        :ok = CivilBus.ack(unquote(opts[:channel]), event)
+
+        send(self(), :acknowledged)
+
+        result
+      end
+
+      def handle_info({:events, _events} = message, state) do
         CivilBus.handle_info(message, state)
       end
     end

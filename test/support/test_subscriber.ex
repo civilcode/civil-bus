@@ -1,12 +1,12 @@
 defmodule CivilBus.TestSubscriber do
   use CivilBus.Subscriber, channel: :my_channel
-  
+
   def init_state() do
     %{notifier: nil}
   end
 
   def add_notifier(subscriber, notifier) do
-    GenServer.call(subscriber, {:notifier, notifier}) 
+    GenServer.call(subscriber, {:notifier, notifier})
   end
 
   def handle_event(event, state) do
@@ -16,5 +16,11 @@ defmodule CivilBus.TestSubscriber do
 
   def handle_call({:notifier, notifier}, _from, state) do
     {:reply, :ok, Map.put(state, :notifier, notifier)}
+  end
+
+  def handle_info(:acknowledged, state) do
+    send(state.notifier, {self(), :acknowledged})
+
+    {:noreply, state}
   end
 end

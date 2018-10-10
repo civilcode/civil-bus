@@ -19,14 +19,14 @@ defmodule CivilBus do
   def publish(channel, event) do
     impl().publish(channel, event)
   end
-  
+
   @impl true
-  def ack(channel, event) do 
+  def ack(channel, event) do
     impl().ack(channel, event)
   end
 
   def handle_info({:events, events}, state) do
-    for event <- events, do: send(self(), {:event, event.data})
+    for event <- events, do: send(self(), {:event, event})
 
     {:noreply, state}
   end
@@ -35,7 +35,7 @@ defmodule CivilBus do
     {:noreply, state}
   end
 
-  defp impl() do
+  def impl() do
     Application.get_env(:civil_bus, :impl, CivilBus.EventStore)
   end
 end

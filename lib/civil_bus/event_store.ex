@@ -31,9 +31,9 @@ defmodule CivilBus.EventStore do
 
     :ok = EventStore.append_to_stream(to_string(channel), :any_version, events)
   end
- 
-  @impl true 
-  def ack(channel, event) do 
+
+  @impl true
+  def ack(channel, event) do
     EventStore.ack(channel, event)
   end
 end
