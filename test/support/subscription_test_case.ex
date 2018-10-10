@@ -1,4 +1,4 @@
-defmodule CivilBus.SubscriberTestCase do
+defmodule CivilBus.SubscriptionTestCase do
   import CivilBus.SharedTestCase
 
   define_tests do

@@ -1,5 +1,5 @@
-defmodule CivilBus.Registry.SubscriberTest do
-  use CivilBus.SubscriberTestCase
+defmodule CivilBus.Registry.SubscriptionTest do
+  use CivilBus.SubscriptionTestCase
 
   setup do
     default_implementation = Application.get_env(:event_bus, :impl)
@@ -15,8 +15,8 @@ defmodule CivilBus.Registry.SubscriberTest do
   end
 end
 
-defmodule CivilBus.EventStore.SubscriberTest do
-  use CivilBus.SubscriberTestCase
+defmodule CivilBus.EventStore.SubscriptionTest do
+  use CivilBus.SubscriptionTestCase
 
   setup do
     default_implementation = Application.get_env(:event_bus, :impl)
