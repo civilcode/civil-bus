@@ -31,7 +31,6 @@ defmodule CivilBus do
   end
 
   defp impl() do
-    Application.get_env(:event_bus, :impl, CivilBus.EventStore)
-    # Application.get_env(:event_bus, :impl, CivilBus.Registry)
+    Application.get_env(:civil_bus, :impl, CivilBus.EventStore)
   end
 end
