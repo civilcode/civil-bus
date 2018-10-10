@@ -5,13 +5,13 @@ defmodule CivilBus.TestSubscriber do
     GenServer.call(subscriber, {:received?, event})
   end
 
-  def handle_event(event, nil), do: handle_event(event, [])
+  def handle_event(event, :subscribed), do: handle_event(event, [])
 
   def handle_event(event, state) do
     {:noreply, [event | state]}
   end
 
-  def handle_call({:received?, event}, from, nil) do
+  def handle_call({:received?, event}, from, :subscribed) do
     handle_call({:received?, event}, from, [])
   end
 
