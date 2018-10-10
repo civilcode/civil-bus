@@ -31,7 +31,7 @@ defmodule CivilBus.Registry do
   end
 
   @impl true
-  def ack(channel, event) do
+  def ack(_channel, _event) do
     :ok
   end
 end
