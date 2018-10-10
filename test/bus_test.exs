@@ -13,7 +13,7 @@ defmodule CivilBusTest do
     defstruct data: "important data"
   end
 
-  @assert_timeout 200
+  @assert_timeout 300
 
   describe "publishing" do
     test "subscribes to the same channel receives the event" do
