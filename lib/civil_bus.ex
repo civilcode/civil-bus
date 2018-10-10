@@ -19,6 +19,11 @@ defmodule CivilBus do
   def publish(channel, event) do
     impl().publish(channel, event)
   end
+  
+  @impl true
+  def ack(channel, event) do 
+    impl().ack(channel, event)
+  end
 
   def handle_info({:events, events}, state) do
     for event <- events, do: send(self(), {:event, event.data})
