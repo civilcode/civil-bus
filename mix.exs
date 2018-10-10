@@ -26,7 +26,7 @@ defmodule CivilBus.MixProject do
     [
       {:eventstore, "~> 0.15.1"},
       {:poison, "~> 3.0"},
-      {:mix_test_watch, "~> 0.5", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 0.5", only: :test, runtime: false}
     ]
   end
 end

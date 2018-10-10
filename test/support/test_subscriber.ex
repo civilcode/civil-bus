@@ -13,7 +13,7 @@ defmodule CivilBus.TestSubscriber do
     send(state.notifier, {self(), event})
     {:noreply, state}
   end
-  
+
   def handle_call({:notifier, notifier}, _from, state) do
     {:reply, :ok, Map.put(state, :notifier, notifier)}
   end
