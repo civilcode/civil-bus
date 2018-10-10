@@ -15,7 +15,10 @@ services:
   application:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
+    environment:
+      # know need to be running this is dev
+      MIX_ENV: test
     volumes:
       # Mount the application: allows us to update files on the host without copying them into the image
       - .:/app
