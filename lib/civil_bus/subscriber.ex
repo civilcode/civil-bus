@@ -12,7 +12,7 @@ defmodule CivilBus.Subscriber do
       def init(:ok) do
         CivilBus.subscribe(unquote(opts[:channel]))
 
-        {:ok, :subscribed}
+        {:ok, init_state()}
       end
 
       def handle_info({:event, event}, state) do
