@@ -4,6 +4,17 @@ defmodule CivilBus.StorageCase do
   alias EventStore.Config
   alias CivilBus.ProcessHelper
 
+  using do
+    quote do
+      import CivilBus.StorageCase
+
+      def assert_down(pid) do
+        ref = Process.monitor(pid)
+        assert_receive {:DOWN, ^ref, _, _, _}
+      end
+    end
+  end
+
   setup do
     config = Config.parsed()
     postgrex_config = Config.default_postgrex_opts(config)
