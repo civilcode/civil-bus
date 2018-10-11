@@ -5,11 +5,10 @@ defmodule CivilBus.Registry.SubscriptionTest do
     default_implementation = Application.get_env(:civil_bus, :impl)
     Application.put_env(:civil_bus, :impl, CivilBus.Registry)
 
-    {:ok, pid} = CivilBus.start_link()
+    {:ok, _pid} = CivilBus.start_link()
 
     on_exit(fn ->
       Application.put_env(:civil_bus, :impl, default_implementation)
-      assert_down(pid)
     end)
 
     :ok
@@ -27,11 +26,10 @@ defmodule CivilBus.EventStore.SubscriptionTest do
     default_implementation = Application.get_env(:civil_bus, :impl)
     Application.put_env(:civil_bus, :impl, CivilBus.EventStore)
 
-    {:ok, pid} = CivilBus.start_link()
+    {:ok, _pid} = CivilBus.start_link()
 
     on_exit(fn ->
       Application.put_env(:civil_bus, :impl, default_implementation)
-      assert_down(pid)
     end)
 
     :ok

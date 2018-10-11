@@ -9,7 +9,6 @@ defmodule CivilBus.SubscriptionTestCase do
     alias CivilBus.TestSubscriber
 
     describe "receiving" do
-      @tag :wip
       test "receives an event" do
         {:ok, subscriber} = TestSubscriber.start_link()
         TestSubscriber.add_notifier(subscriber, self())

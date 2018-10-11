@@ -1,10 +1,8 @@
 defmodule CivilBusTest do
-  use CivilBus.TestCase
+  use CivilBus.StorageCase
 
   setup do
-    {:ok, pid} = CivilBus.start_link()
-
-    on_exit(fn -> assert_down(pid) end)
+    {:ok, _pid} = CivilBus.start_link()
 
     :ok
   end

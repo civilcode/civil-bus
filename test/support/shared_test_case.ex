@@ -6,7 +6,7 @@ defmodule CivilBus.SharedTestCase do
         block = unquote(Macro.escape(block))
 
         quote do
-          use CivilBus.TestCase
+          use CivilBus.StorageCase
 
           @moduletag unquote(options)
           unquote(block)
