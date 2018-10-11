@@ -11,7 +11,7 @@ defmodule CivilBus.SubscriptionTestCase do
     describe "receiving" do
       test "receives an event" do
         {:ok, subscriber} = TestSubscriber.start_link()
-        TestSubscriber.add_notifier(subscriber, self())
+        TestSubscriber.add_listener(subscriber, self())
 
         :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
@@ -21,9 +21,9 @@ defmodule CivilBus.SubscriptionTestCase do
 
       test "two subscribers receive an event" do
         {:ok, subscriber_1} = TestSubscriber.start_link()
-        TestSubscriber.add_notifier(subscriber_1, self())
+        TestSubscriber.add_listener(subscriber_1, self())
         {:ok, subscriber_2} = TestSubscriber.start_link()
-        TestSubscriber.add_notifier(subscriber_2, self())
+        TestSubscriber.add_listener(subscriber_2, self())
 
         :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
