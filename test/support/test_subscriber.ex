@@ -15,7 +15,7 @@ defmodule CivilBus.TestSubscriber do
   end
 
   def handle_call({:listener, listener}, _from, state) do
-    {:reply, :ok, Map.put(state, :listener, listener)}
+    {:reply, :ok, %{state | listener: listener}}
   end
 
   def handle_info(:acknowledged, state) do

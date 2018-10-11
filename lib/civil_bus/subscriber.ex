@@ -32,6 +32,9 @@ defmodule CivilBus.Subscriber do
       def handle_info({:events, _events} = message, state) do
         CivilBus.handle_info(message, state)
       end
+
+      def init_state(), do: %{}
+      defoverridable init_state: 0
     end
   end
 end
