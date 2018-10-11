@@ -23,4 +23,6 @@ defmodule CivilBus.TestSubscriber do
 
     {:noreply, state}
   end
+
+  def handle_info(_, state), do: {:noreply, state}
 end
