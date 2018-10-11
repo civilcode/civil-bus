@@ -1,6 +1,6 @@
 # CivilBus
 
-**TODO: Add description**
+*CivilBus take care of publishing and subscribing to events.*
 
 ## Installation
 
