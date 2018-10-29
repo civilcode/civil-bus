@@ -1,21 +1,25 @@
-# CivilEventBus
+# CivilBus
 
-**TODO: Add description**
+*CivilBus take care of publishing and subscribing to events.*
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `civil_event_bus` to your list of dependencies in `mix.exs`:
+by adding `civil_bus` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:civil_event_bus, "~> 0.1.0"}
+    {:civil_bus, "~> 0.1.0"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/civil_event_bus](https://hexdocs.pm/civil_event_bus).
+## Setup
 
+    git clone https://github.com/civilcode/civil-bus.git
+    cd civil-bus
+    docker-compose up -d
+    docker-compose exec -e MIX_ENV=test application mix deps.get
+    docker-compose exec -e MIX_ENV=test application mix do event_store.create, event_store.init
+    docker-compose exec application mix test
