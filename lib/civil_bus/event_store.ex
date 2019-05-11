@@ -33,7 +33,7 @@ defmodule CivilBus.EventStore do
   end
 
   @impl true
-  def ack(channel, event) do
-    EventStore.ack(channel, event)
+  def ack(_channel, _event) do
+    :ok
   end
 end
