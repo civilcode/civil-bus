@@ -8,3 +8,13 @@ build:
 
 start:
 	docker-compose up -d
+
+clean:
+	docker-compose stop
+	rm -rf deps
+	rm -rf _build
+	docker-compose up -d
+	docker-compose exec application mix deps.get
+
+stop:
+	docker-compose stop
