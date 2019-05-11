@@ -24,7 +24,7 @@ defmodule CivilBus.MixProject do
 
   defp deps do
     [
-      {:eventstore, "~> 0.15.1"},
+      {:eventstore, "~> 0.16"},
       {:poison, "~> 3.0"},
       {:mix_test_watch, "~> 0.5", only: :test, runtime: false}
     ]
