@@ -5,7 +5,7 @@ defmodule CivilBus.MixProject do
     [
       app: :civil_bus,
       version: "0.1.0",
-      elixir: "~> 1.6",
+      elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env())
@@ -24,8 +24,8 @@ defmodule CivilBus.MixProject do
 
   defp deps do
     [
-      {:eventstore, "~> 0.16"},
-      {:poison, "~> 3.0"},
+      {:eventstore, "~> 0.16", optional: true},
+      {:jason, "~> 1.1", optional: true},
       {:mix_test_watch, "~> 0.5", only: :test, runtime: false}
     ]
   end

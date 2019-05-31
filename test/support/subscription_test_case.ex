@@ -6,6 +6,8 @@ defmodule CivilBus.SubscriptionTestCase do
       defstruct data: "event data"
     end
 
+    @timeout 200
+
     alias CivilBus.TestSubscriber
 
     describe "receiving" do
@@ -15,8 +17,8 @@ defmodule CivilBus.SubscriptionTestCase do
 
         :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
-        assert_receive {^subscriber, %MyEvent{}}
-        assert_receive {^subscriber, :acknowledged}, 200
+        assert_receive {^subscriber, %MyEvent{}}, @timeout
+        assert_receive {^subscriber, :acknowledged}, @timeout
       end
 
       test "two subscribers receive an event" do
@@ -27,10 +29,10 @@ defmodule CivilBus.SubscriptionTestCase do
 
         :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
-        assert_receive {^subscriber_1, %MyEvent{}}
-        assert_receive {^subscriber_1, :acknowledged}, 200
-        assert_receive {^subscriber_2, %MyEvent{}}
-        assert_receive {^subscriber_2, :acknowledged}, 200
+        assert_receive {^subscriber_1, %MyEvent{}}, @timeout
+        assert_receive {^subscriber_1, :acknowledged}, @timeout
+        assert_receive {^subscriber_2, %MyEvent{}}, @timeout
+        assert_receive {^subscriber_2, :acknowledged}, @timeout
       end
     end
   end
