@@ -4,6 +4,7 @@ build:
 	docker-compose build --force-rm --no-cache
 	docker-compose up -d
 	docker-compose exec -e MIX_ENV=test application mix deps.get
+	docker-compose exec -e MIX_ENV=test application mix compile --force
 	docker-compose exec -e MIX_ENV=test application mix do event_store.create, event_store.init
 
 start:
