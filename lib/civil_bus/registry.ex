@@ -16,9 +16,7 @@ defmodule CivilBus.Registry do
 
   @impl true
   def subscribe(_module, channel) do
-    {:ok, _} = Registry.register(__MODULE__, channel, [])
-
-    :ok
+    Registry.register(__MODULE__, channel, [])
   end
 
   @impl true
@@ -31,7 +29,7 @@ defmodule CivilBus.Registry do
   end
 
   @impl true
-  def ack(_channel, _event) do
+  def ack(_subscription, _event) do
     :ok
   end
 end

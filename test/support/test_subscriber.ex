@@ -16,21 +16,21 @@ for subscriber <- [CivilBus.TestSubscriber, CivilBus.TestSubscriber1, CivilBus.T
     """
     use CivilBus.Subscriber, channel: :my_channel
 
-    def init_state() do
-      %{listener: nil}
-    end
+    # Public API
 
     def add_listener(subscriber, listener) do
-      GenServer.call(subscriber, {:listener, listener})
+      GenServer.call(subscriber, {:add_listener, listener})
     end
+
+    # Callbacks
 
     def handle_event(event, state) do
       send(state.listener, {self(), event})
       {:noreply, state}
     end
 
-    def handle_call({:listener, listener}, _from, state) do
-      {:reply, :ok, %{state | listener: listener}}
+    def handle_call({:add_listener, listener}, _from, state) do
+      {:reply, :ok, Map.put(state, :listener, listener)}
     end
 
     def handle_info(:acknowledged, state) do
