@@ -15,7 +15,7 @@ defmodule CivilBus.Registry do
   end
 
   @impl true
-  def subscribe(channel) do
+  def subscribe(_module, channel) do
     {:ok, _} = Registry.register(__MODULE__, channel, [])
 
     :ok

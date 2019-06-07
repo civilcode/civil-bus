@@ -12,11 +12,9 @@ if Code.ensure_loaded?(EventStore) do
     end
 
     @impl true
-    def subscribe(channel) do
-      subscription_name = "subscription_#{inspect(self())}"
-
+    def subscribe(module, channel) do
       {:ok, _subscription} =
-        EventStore.subscribe_to_stream(to_string(channel), subscription_name, self())
+        EventStore.subscribe_to_stream(to_string(channel), to_string(module), self())
 
       :ok
     end
@@ -34,7 +32,7 @@ if Code.ensure_loaded?(EventStore) do
     end
 
     @impl true
-    def ack(_channel, _event) do
+    def ack(channel, event) do
       :ok
     end
   end

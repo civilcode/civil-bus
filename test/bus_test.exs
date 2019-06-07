@@ -17,7 +17,7 @@ defmodule CivilBusTest do
 
   describe "publishing" do
     test "subscribes to the same channel receives the event" do
-      :ok = CivilBus.subscribe(:my_channel)
+      :ok = CivilBus.subscribe(__MODULE__, :my_channel)
       :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
       receive do
@@ -31,7 +31,7 @@ defmodule CivilBusTest do
     end
 
     test "subscribes to another channel does not receive the event" do
-      :ok = CivilBus.subscribe(:my_channel)
+      :ok = CivilBus.subscribe(__MODULE__, :my_channel)
       :ok = CivilBus.publish(:another_channel, %MyEvent{})
       refute_receive {:event, %MyEvent{}}
     end

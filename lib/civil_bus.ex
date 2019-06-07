@@ -36,8 +36,8 @@ defmodule CivilBus do
       end
   """
   @impl true
-  def subscribe(channel) do
-    impl().subscribe(channel)
+  def subscribe(module, channel) do
+    impl().subscribe(module, channel)
   end
 
   @doc """

@@ -32,7 +32,7 @@ defmodule CivilBus.Subscriber do
       end
 
       def init(:ok) do
-        CivilBus.subscribe(unquote(opts[:channel]))
+        CivilBus.subscribe(__MODULE__, unquote(opts[:channel]))
 
         {:ok, init_state()}
       end

@@ -8,7 +8,7 @@ defmodule CivilBus.Behaviour do
   @type event :: term
 
   @callback start_link(Keyword.t()) :: {:ok, pid()} | {:error, term}
-  @callback subscribe(channel) :: :ok
+  @callback subscribe(module, channel) :: :ok
   @callback publish(channel, event) :: :ok
   @callback ack(channel, event) :: :ok
 end
