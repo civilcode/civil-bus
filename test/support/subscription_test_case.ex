@@ -6,9 +6,9 @@ defmodule CivilBus.SubscriptionTestCase do
       defstruct data: "event data"
     end
 
-    @timeout 200
+    @timeout 300
 
-    alias CivilBus.TestSubscriber
+    alias CivilBus.{TestSubscriber, TestSubscriber1, TestSubscriber2}
 
     describe "receiving" do
       test "receives an event" do
@@ -22,9 +22,9 @@ defmodule CivilBus.SubscriptionTestCase do
       end
 
       test "two subscribers receive an event" do
-        {:ok, subscriber_1} = TestSubscriber.start_link()
+        {:ok, subscriber_1} = TestSubscriber1.start_link()
         TestSubscriber.add_listener(subscriber_1, self())
-        {:ok, subscriber_2} = TestSubscriber.start_link()
+        {:ok, subscriber_2} = TestSubscriber2.start_link()
         TestSubscriber.add_listener(subscriber_2, self())
 
         :ok = CivilBus.publish(:my_channel, %MyEvent{})

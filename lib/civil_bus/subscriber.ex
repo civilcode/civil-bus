@@ -28,13 +28,13 @@ defmodule CivilBus.Subscriber do
       use GenServer
 
       def start_link(_opts \\ []) do
-        GenServer.start_link(__MODULE__, :ok, [])
+        GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
       end
 
       def init(:ok) do
-        CivilBus.subscribe(unquote(opts[:channel]))
+        {:ok, subscription} = CivilBus.subscribe(__MODULE__, unquote(opts[:channel]))
 
-        {:ok, init_state()}
+        {:ok, Map.put(init_state(), :subscription, subscription)}
       end
 
       def handle_info({:subscribed, _pid}, state) do
@@ -42,13 +42,15 @@ defmodule CivilBus.Subscriber do
       end
 
       def handle_info({:event, event}, state) do
-        result = handle_event(event.data, state)
+        {tag, new_state} = handle_event(event.data, state)
 
-        :ok = CivilBus.ack(unquote(opts[:channel]), event)
+        :ok = CivilBus.ack(state.subscription, event)
 
+        # This message is required for testing to confirm that an acknowledgement was sent
+        # by the subscriber.
         send(self(), :acknowledged)
 
-        result
+        {tag, new_state}
       end
 
       def handle_info({:events, _events} = message, state) do
