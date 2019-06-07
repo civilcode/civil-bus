@@ -46,6 +46,8 @@ defmodule CivilBus.Subscriber do
 
         :ok = CivilBus.ack(state.subscription, event)
 
+        # This message is required for testing to confirm that an acknowledgement was sent
+        # by the subscriber.
         send(self(), :acknowledged)
 
         {tag, new_state}
