@@ -16,7 +16,7 @@ defmodule CivilBus.StorageCase do
   end
 
   setup do
-    config = Config.parsed()
+    config = Config.parsed(CivilBus.EventStore.Repo, :civil_bus)
     postgrex_config = Config.default_postgrex_opts(config)
     registry = Application.get_env(:eventstore, :registry, :local)
 

@@ -2,10 +2,9 @@ use Mix.Config
 
 config :logger, backends: []
 
-config :eventstore, column_data_type: "jsonb"
-
-config :eventstore, EventStore.Storage,
+config :civil_bus, CivilBus.EventStore.Repo,
   serializer: EventStore.JsonbSerializer,
+  column_data_type: "jsonb",
   types: EventStore.PostgresTypes,
   username: "postgres",
   password: "postgres",

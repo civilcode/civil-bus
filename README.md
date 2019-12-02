@@ -40,18 +40,17 @@ For use with EventStore:
 def deps do
   [
     {:civil_bus, github: "civilcode/civil-bus"},
-    {:eventstore, "~> 0.16", optional: true},
-    {:jason, "~> 1.1", optional: true}
+    {:eventstore, "~> 1.0"},
+    {:jason, "~> 1.1"}
   ]
 end
 
 # config.exs
 config :civil_bus, impl: CivilBus.EventStore
 
-config :eventstore, column_data_type: "jsonb"
-
-config :eventstore, EventStore.Storage,
+config :civil_bus, CivilBus.EventStore.Repo,
   serializer: EventStore.JsonbSerializer,
+  column_data_type: "jsonb",
   types: EventStore.PostgresTypes,
   username: "postgres",
   password: "postgres",
