@@ -4,6 +4,10 @@ if Code.ensure_loaded?(EventStore) do
     EventStore implementation for the CivilBus.
     """
 
+    defmodule Repo do
+      use EventStore, otp_app: :civil_bus
+    end
+
     @behaviour CivilBus.Behaviour
 
     @impl true
@@ -13,7 +17,7 @@ if Code.ensure_loaded?(EventStore) do
 
     @impl true
     def subscribe(module, channel) do
-      EventStore.subscribe_to_stream(to_string(channel), to_string(module), self())
+      Repo.subscribe_to_stream(to_string(channel), to_string(module), self())
     end
 
     @impl true
@@ -25,12 +29,12 @@ if Code.ensure_loaded?(EventStore) do
         }
       ]
 
-      :ok = EventStore.append_to_stream(to_string(channel), :any_version, events)
+      :ok = Repo.append_to_stream(to_string(channel), :any_version, events)
     end
 
     @impl true
     def ack(subscription, event) do
-      EventStore.ack(subscription, event)
+      Repo.ack(subscription, event)
     end
   end
 end
