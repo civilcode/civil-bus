@@ -6,11 +6,6 @@ if CivilBus.Config.impl() == CivilBus.EventStore do
 
     defmodule Repo do
       use EventStore, otp_app: :civil_bus
-
-      def init(config) do
-        runtime = Application.fetch_env!(:civil_bus, CivilBus.EventStore.Repo)
-        {:ok, runtime ++ config}
-      end
     end
 
     @behaviour CivilBus.Behaviour
