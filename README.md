@@ -46,6 +46,8 @@ def deps do
 end
 
 # config.exs
+config :my_app, event_stores: [CivilBus.EventStore.Repo]
+
 config :civil_bus, impl: CivilBus.EventStore
 
 config :civil_bus, CivilBus.EventStore.Repo,
