@@ -15,14 +15,16 @@ defmodule CivilBus.Registry do
   end
 
   @impl true
-  def subscribe(_module, channel) do
-    Registry.register(__MODULE__, channel, [])
+  def subscribe(module, channel, opts) do
+    Registry.register(__MODULE__, channel, {module, opts})
   end
 
   @impl true
   def publish(channel, event) do
     Registry.dispatch(__MODULE__, channel, fn entries ->
-      for {pid, _} <- entries, do: send(pid, {:events, [%{data: event}]})
+      for {pid, {_module, _opts}} <- entries do
+        send(pid, {:events, [%{data: event}]})
+      end
     end)
 
     :ok

@@ -24,6 +24,8 @@ defmodule CivilBus.Subscriber do
   """
 
   defmacro __using__(opts) do
+    channel = Keyword.fetch!(opts, :channel)
+
     quote do
       use GenServer
 
@@ -32,7 +34,7 @@ defmodule CivilBus.Subscriber do
       end
 
       def init(:ok) do
-        {:ok, subscription} = CivilBus.subscribe(__MODULE__, unquote(opts[:channel]))
+        {:ok, subscription} = CivilBus.subscribe(__MODULE__, unquote(channel), unquote(opts))
 
         {:ok, Map.put(init_state(), :subscription, subscription)}
       end
