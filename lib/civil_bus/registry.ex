@@ -21,13 +21,19 @@ defmodule CivilBus.Registry do
 
   @impl true
   def publish(channel, event) do
-    Registry.dispatch(__MODULE__, channel, fn entries ->
-      for {pid, {_module, _opts}} <- entries do
-        send(pid, {:events, [%{data: event}]})
-      end
-    end)
+    Registry.dispatch(__MODULE__, channel, &notify(&1, event))
 
     :ok
+  end
+
+  defp notify(entries, event) do
+    for {pid, {_module, opts}} <- entries do
+      if Keyword.get(opts, :consistency) == :strong do
+        GenServer.call(pid, {:event, %{data: event}})
+      else
+        send(pid, {:events, [%{data: event}]})
+      end
+    end
   end
 
   @impl true

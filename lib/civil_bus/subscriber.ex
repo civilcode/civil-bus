@@ -43,6 +43,18 @@ defmodule CivilBus.Subscriber do
         {:noreply, state}
       end
 
+      def handle_call({:event, event}, _from, state) do
+        {:noreply, new_state} = handle_event(event.data, state)
+
+        :ok = CivilBus.ack(state.subscription, event)
+
+        # This message is required for testing to confirm that an acknowledgement was sent
+        # by the subscriber.
+        send(self(), :acknowledged)
+
+        {:reply, :ok, new_state}
+      end
+
       def handle_info({:event, event}, state) do
         {tag, new_state} = handle_event(event.data, state)
 
