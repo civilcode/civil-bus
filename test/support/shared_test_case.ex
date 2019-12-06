@@ -1,12 +1,6 @@
 defmodule CivilBus.SharedTestCase do
   @moduledoc false
 
-  defmacro __using__(_opts) do
-    quote do
-      import CivilBus.SharedTestCase
-    end
-  end
-
   defmodule TestCase do
     use ExUnit.CaseTemplate
 
@@ -17,6 +11,12 @@ defmodule CivilBus.SharedTestCase do
           assert_receive {:DOWN, ^ref, _, _, _}
         end
       end
+    end
+  end
+
+  defmacro __using__(_opts) do
+    quote do
+      import CivilBus.SharedTestCase
     end
   end
 
