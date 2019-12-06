@@ -11,9 +11,9 @@ defmodule CivilBus.SubscriptionSharedTests do
 
     @timeout 300
 
-    define_subscriber(TestSubscriber)
-    define_subscriber(TestSubscriber1)
-    define_subscriber(TestSubscriber2)
+    define_subscriber(TestSubscriber, channel: :my_channel)
+    define_subscriber(TestSubscriber1, channel: :my_channel)
+    define_subscriber(TestSubscriber2, channel: :my_channel)
 
     describe "receiving" do
       test "receives an event" do

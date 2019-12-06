@@ -1,5 +1,5 @@
 defmodule CivilBus.SubscriberGenerator do
-  defmacro define_subscriber(module_name) do
+  defmacro define_subscriber(module_name, subscriber_opts) do
     quote do
       defmodule unquote(module_name) do
         @moduledoc """
@@ -13,7 +13,7 @@ defmodule CivilBus.SubscriberGenerator do
           assert_receive {^subscriber, %MyEvent{}}
           assert_receive {^subscriber, :acknowledged}
         """
-        use CivilBus.Subscriber, channel: :my_channel
+        use CivilBus.Subscriber, unquote(subscriber_opts)
 
         # Public API
 
