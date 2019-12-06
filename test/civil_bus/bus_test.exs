@@ -1,5 +1,5 @@
 defmodule CivilBusTest do
-  use CivilBus.StorageCase
+  use CivilBus.EventStoreCase
 
   setup do
     {:ok, pid} = CivilBus.start_link()
