@@ -31,6 +31,8 @@ defmodule CivilBus.SharedTestCase do
         quote do
           use TestCase
 
+          import CivilBus.SubscriberGenerator
+
           @moduletag unquote(options)
           unquote(block)
         end

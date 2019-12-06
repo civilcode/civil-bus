@@ -11,7 +11,9 @@ defmodule CivilBus.SubscriptionSharedTests do
 
     @timeout 300
 
-    alias CivilBus.{TestSubscriber, TestSubscriber1, TestSubscriber2}
+    define_subscriber(TestSubscriber)
+    define_subscriber(TestSubscriber1)
+    define_subscriber(TestSubscriber2)
 
     describe "receiving" do
       test "receives an event" do
