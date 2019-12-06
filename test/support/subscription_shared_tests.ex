@@ -1,5 +1,8 @@
-defmodule CivilBus.SubscriptionTestCase do
-  import CivilBus.SharedTestCase
+defmodule CivilBus.SubscriptionSharedTests do
+  @moduledoc """
+  Test cases to subscribe, publish and receive events.
+  """
+  use CivilBus.SharedTestCase
 
   define_tests do
     defmodule MyEvent do

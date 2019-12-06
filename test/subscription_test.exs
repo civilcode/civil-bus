@@ -1,5 +1,5 @@
 defmodule CivilBus.Registry.SubscriptionTest do
-  use CivilBus.SubscriptionTestCase
+  use CivilBus.SubscriptionSharedTests
 
   setup do
     default_implementation = Application.get_env(:civil_bus, :impl)
@@ -21,7 +21,7 @@ defmodule CivilBus.Registry.SubscriptionTest do
 end
 
 defmodule CivilBus.EventStore.SubscriptionTest do
-  use CivilBus.SubscriptionTestCase
+  use CivilBus.SubscriptionSharedTests
 
   setup do
     default_implementation = Application.get_env(:civil_bus, :impl)
