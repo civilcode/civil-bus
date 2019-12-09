@@ -23,8 +23,14 @@ defmodule CivilBus.SubscriberGenerator do
 
         # Callbacks
 
+        def handle_event(event, %{listener: listener} = state) do
+          send(listener, {self(), event})
+          {:noreply, state}
+        end
+
+        # Handle when no subscribe is added. Required when testing for strong consistency.
         def handle_event(event, state) do
-          send(state.listener, {self(), event})
+          send(self(), event)
           {:noreply, state}
         end
 

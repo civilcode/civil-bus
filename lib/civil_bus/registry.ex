@@ -7,6 +7,8 @@ defmodule CivilBus.Registry do
 
   @default_consistency :eventual
 
+  alias CivilBus.Subscriber
+
   @impl true
   def start_link(_opts \\ []) do
     Registry.start_link(
@@ -37,12 +39,12 @@ defmodule CivilBus.Registry do
       end)
 
     # Send of strong notifications first to ensure consistency
-    for {pid, _} <- strong_notifications do
-      GenServer.call(pid, {:event, %{data: event}})
+    for {pid, {module, _opts}} <- strong_notifications do
+      Subscriber.notify_sync(pid, module, event)
     end
 
     for {pid, _} <- eventual_notifications do
-      send(pid, {:events, [%{data: event}]})
+      Subscriber.notify_async(pid, event)
     end
   end
 

@@ -23,13 +23,11 @@ defmodule CivilBus.Registry.SubscriptionTest do
     define_subscriber(FooSubscriber, channel: :my_channel, consistency: :strong)
 
     test "receives an event" do
-      {:ok, subscriber} = FooSubscriber.start_link()
-      FooSubscriber.add_listener(subscriber, self())
+      {:ok, _subscriber} = FooSubscriber.start_link()
 
       :ok = CivilBus.publish(:my_channel, %MyEvent{})
 
-      assert_receive {^subscriber, %MyEvent{}}, @timeout
-      assert_receive {^subscriber, :acknowledged}, @timeout
+      assert_receive %MyEvent{}, @timeout
     end
   end
 end
