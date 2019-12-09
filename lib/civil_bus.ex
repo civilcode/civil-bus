@@ -34,6 +34,10 @@ defmodule CivilBus do
       defmodule MyModule do
         use CivilBus.Subcriber, channel: :my_channel
       end
+
+  The subscriber can optionally set the `:consistency` option to `:strong` resulting in
+  synchronous call. The default is `:eventual` with asynchronous calls to the event handler.
+  The `CivilCode.Registry` implementation only supports the `:strong` option.
   """
   @impl true
   def subscribe(module, channel, opts \\ []) do
