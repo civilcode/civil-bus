@@ -52,7 +52,7 @@ opts = [strategy: :one_for_one, name: MagasinData.Supervisor]
 Supervisor.start_link(children, opts)
 ```
 
-For use with EventStore:
+For use with EventStore (recommended):
 
 ```elixir
 # mix.exs
@@ -69,6 +69,22 @@ config :my_app, event_stores: [CivilBus.EventStore.Repo]
 
 config :civil_bus, impl: CivilBus.EventStore
 
+config :civil_bus, CivilBus.EventStore.Repo,
+  serializer: EventStore.TermSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "eventstore_test",
+  hostname: "db",
+  pool_size: 10,
+  pool_overflow: 5
+```
+
+Need to query the event data directly via SQL?
+
+  * setup a subscriber to persist the event data as JSON
+  * or setup the event store table to persist events as JSON
+
+```elixir
 config :civil_bus, CivilBus.EventStore.Repo,
   serializer: EventStore.JsonbSerializer,
   column_data_type: "jsonb",
