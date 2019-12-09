@@ -5,6 +5,8 @@ defmodule CivilBus.Registry do
 
   @behaviour CivilBus.Behaviour
 
+  @default_consistency :eventual
+
   @impl true
   def start_link(_opts \\ []) do
     Registry.start_link(
@@ -16,7 +18,9 @@ defmodule CivilBus.Registry do
 
   @impl true
   def subscribe(module, channel, opts) do
-    Registry.register(__MODULE__, channel, {module, opts})
+    consistency = Keyword.get(opts, :consistency, @default_consistency)
+
+    Registry.register(__MODULE__, channel, {module, Keyword.put(opts, :consistency, consistency)})
   end
 
   @impl true
@@ -28,10 +32,12 @@ defmodule CivilBus.Registry do
 
   defp notify(entries, event) do
     for {pid, {_module, opts}} <- entries do
-      if Keyword.get(opts, :consistency) == :strong do
-        GenServer.call(pid, {:event, %{data: event}})
-      else
-        send(pid, {:events, [%{data: event}]})
+      case Keyword.fetch!(opts, :consistency) do
+        :strong ->
+          GenServer.call(pid, {:event, %{data: event}})
+
+        :eventual ->
+          send(pid, {:events, [%{data: event}]})
       end
     end
   end
