@@ -1,5 +1,8 @@
-defmodule CivilBus.SubscriptionTestCase do
-  import CivilBus.SharedTestCase
+defmodule CivilBus.SubscriptionSharedTests do
+  @moduledoc """
+  Test cases to subscribe, publish and receive events.
+  """
+  use CivilBus.SharedTestCase
 
   define_tests do
     defmodule MyEvent do
@@ -8,7 +11,9 @@ defmodule CivilBus.SubscriptionTestCase do
 
     @timeout 300
 
-    alias CivilBus.{TestSubscriber, TestSubscriber1, TestSubscriber2}
+    define_subscriber(TestSubscriber, channel: :my_channel)
+    define_subscriber(TestSubscriber1, channel: :my_channel)
+    define_subscriber(TestSubscriber2, channel: :my_channel)
 
     describe "receiving" do
       test "receives an event" do

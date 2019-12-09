@@ -9,7 +9,7 @@ defmodule CivilBus.Behaviour do
   @type subscription :: pid
 
   @callback start_link(Keyword.t()) :: {:ok, pid()} | {:error, term}
-  @callback subscribe(module, channel) :: {:ok, subscription}
+  @callback subscribe(module, channel, Keyword.t()) :: {:ok, subscription}
   @callback publish(channel, event) :: :ok
   @callback ack(subscription, event) :: :ok
 end

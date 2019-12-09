@@ -16,7 +16,7 @@ if CivilBus.Config.impl() == CivilBus.EventStore do
     end
 
     @impl true
-    def subscribe(module, channel) do
+    def subscribe(module, channel, _opts) do
       Repo.subscribe_to_stream(to_string(channel), to_string(module), self())
     end
 

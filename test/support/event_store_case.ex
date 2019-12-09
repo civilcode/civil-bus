@@ -1,4 +1,4 @@
-defmodule CivilBus.StorageCase do
+defmodule CivilBus.EventStoreCase do
   use ExUnit.CaseTemplate
 
   alias EventStore.Config
@@ -6,7 +6,7 @@ defmodule CivilBus.StorageCase do
 
   using do
     quote do
-      import CivilBus.StorageCase
+      import CivilBus.EventStoreCase
 
       def assert_down(pid) do
         ref = Process.monitor(pid)
@@ -16,6 +16,13 @@ defmodule CivilBus.StorageCase do
   end
 
   setup do
+    {conn, registry} = start_event_store()
+    on_exit(fn -> shutdown_event_store(conn, registry) end)
+
+    {:ok, %{conn: conn}}
+  end
+
+  defp start_event_store() do
     config = Config.parsed(CivilBus.EventStore.Repo, :civil_bus)
     postgrex_config = Config.default_postgrex_opts(config)
     registry = Application.get_env(:eventstore, :registry, :local)
@@ -26,19 +33,21 @@ defmodule CivilBus.StorageCase do
 
     after_reset(registry)
 
-    on_exit(fn ->
-      after_exit(registry)
-      ProcessHelper.shutdown(conn)
-    end)
+    {:ok, _} = Application.ensure_all_started(:eventstore)
 
-    {:ok, %{conn: conn}}
-  end
-
-  defp after_exit(:local) do
-    Application.stop(:eventstore)
+    {conn, registry}
   end
 
   defp after_reset(:local) do
     {:ok, _} = Application.ensure_all_started(:eventstore)
+  end
+
+  defp shutdown_event_store(conn, registry) do
+    after_exit(registry)
+    ProcessHelper.shutdown(conn)
+  end
+
+  defp after_exit(:local) do
+    Application.stop(:eventstore)
   end
 end

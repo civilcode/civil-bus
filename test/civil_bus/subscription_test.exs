@@ -1,5 +1,5 @@
 defmodule CivilBus.Registry.SubscriptionTest do
-  use CivilBus.SubscriptionTestCase
+  use CivilBus.SubscriptionSharedTests
 
   setup do
     default_implementation = Application.get_env(:civil_bus, :impl)
@@ -18,10 +18,22 @@ defmodule CivilBus.Registry.SubscriptionTest do
   test "running against correct implementation" do
     assert CivilBus.impl() == CivilBus.Registry
   end
+
+  describe "subsribing with strong consistency" do
+    define_subscriber(FooSubscriber, channel: :my_channel, consistency: :strong)
+
+    test "receives an event" do
+      {:ok, _subscriber} = FooSubscriber.start_link()
+
+      :ok = CivilBus.publish(:my_channel, %MyEvent{})
+
+      assert_receive %MyEvent{}, @timeout
+    end
+  end
 end
 
 defmodule CivilBus.EventStore.SubscriptionTest do
-  use CivilBus.SubscriptionTestCase
+  use CivilBus.SubscriptionSharedTests
 
   setup do
     default_implementation = Application.get_env(:civil_bus, :impl)

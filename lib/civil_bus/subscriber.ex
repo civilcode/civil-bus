@@ -23,7 +23,30 @@ defmodule CivilBus.Subscriber do
   end
   """
 
+  @doc """
+  Notifies a subscriber synchronously. The `handle_event/2` function is called directly to ensure
+  that it is run in the same process. This is helpful when making a notification in an Ecto.Transaction.
+  If call was made in a different process, the transaction would not be available.
+
+  WARNING: State is not updated in the process for this function.
+  """
+  def notify_sync(pid, module, event) do
+    state = :sys.get_state(pid)
+    result = module.handle_event(event, state)
+    :ok = CivilBus.ack(state.subscription, event)
+    result
+  end
+
+  @doc """
+  Notify subscriber asynchronously.
+  """
+  def notify_async(pid, event) do
+    send(pid, {:events, [%{data: event}]})
+  end
+
   defmacro __using__(opts) do
+    channel = Keyword.fetch!(opts, :channel)
+
     quote do
       use GenServer
 
@@ -32,7 +55,7 @@ defmodule CivilBus.Subscriber do
       end
 
       def init(:ok) do
-        {:ok, subscription} = CivilBus.subscribe(__MODULE__, unquote(opts[:channel]))
+        {:ok, subscription} = CivilBus.subscribe(__MODULE__, unquote(channel), unquote(opts))
 
         {:ok, Map.put(init_state(), :subscription, subscription)}
       end
