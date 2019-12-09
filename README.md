@@ -3,8 +3,27 @@
 CivilBus is a wrapper for different implementations of an event bus. Currently the following
 are supported:
 
-* [Elixir Register](https://hexdocs.pm/elixir/master/Registry.html) as a [dispatcher](https://hexdocs.pm/elixir/master/Registry.html#module-using-as-a-dispatcher)
-* [EventStore](https://github.com/commanded/eventstore)
+  * [Elixir Register](https://hexdocs.pm/elixir/master/Registry.html) as a [dispatcher](https://hexdocs.pm/elixir/master/Registry.html#module-using-as-a-dispatcher)
+  * [EventStore](https://github.com/commanded/eventstore)
+
+CivilBus was created with the intention to support [domain and integration events](http://rethinkingdesign.tech/2017/10/02/ddd-domain-and-integration-events/).
+
+Domain events have the following characteristics:
+
+  * contain value objects (aka domain primitives)
+  * normally synchronous and handled in the same database transaction
+  * not stored for the long term (except for event sourcing systems)
+  * contain the delta of the event
+
+In contrast to integration events:
+
+  * contain simple primitives only
+  * normally asynchronous and handled outside a database transaction
+  * maybe stored for the long term for debugging or retries
+
+In reality, depending on your implementation it's possible to mix these characteristics. However,
+the most important rule is, if the event is not handled in the same transaction, a delta must
+be provided in the event payload.
 
 ## Installation
 
