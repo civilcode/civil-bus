@@ -30,15 +30,19 @@ defmodule CivilBus.Registry do
     :ok
   end
 
-  defp notify(entries, event) do
-    for {pid, {_module, opts}} <- entries do
-      case Keyword.fetch!(opts, :consistency) do
-        :strong ->
-          GenServer.call(pid, {:event, %{data: event}})
+  defp notify(subscribers, event) do
+    {strong_notifications, eventual_notifications} =
+      Enum.split_with(subscribers, fn {_pid, {_module, opts}} ->
+        Keyword.fetch!(opts, :consistency) == :strong
+      end)
 
-        :eventual ->
-          send(pid, {:events, [%{data: event}]})
-      end
+    # Send of strong notifications first to ensure consistency
+    for {pid, _} <- strong_notifications do
+      GenServer.call(pid, {:event, %{data: event}})
+    end
+
+    for {pid, _} <- eventual_notifications do
+      send(pid, {:events, [%{data: event}]})
     end
   end
 
