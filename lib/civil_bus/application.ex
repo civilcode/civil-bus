@@ -5,13 +5,15 @@ defmodule CivilBus.Application do
 
   def start(_type, _args) do
     children =
-      if CivilBus.Config.impl() == CivilBus.EventStore do
-        # Ensure eventstore is started, as this is an optional dependency
-        # so it cannot be defined in :extra_applications
-        {:ok, _} = Application.ensure_all_started(:eventstore)
-        [CivilBus.EventStore.Repo]
-      else
-        []
+      case CivilBus.Config.impl() do
+        CivilBus.EventStore ->
+          # Ensure eventstore is started, as this is an optional dependency
+          # so it cannot be defined in :extra_applications
+          {:ok, _} = Application.ensure_all_started(:eventstore)
+          [CivilBus.EventStore.Repo]
+
+        CivilBus.Registry ->
+          [CivilBus.Registry]
       end
 
     opts = [strategy: :one_for_one, name: CivilBus.Supervisor]
