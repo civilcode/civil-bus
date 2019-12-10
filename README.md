@@ -39,17 +39,6 @@ end
 
 # config.exs
 config :civil_bus, impl: CivilBus.Registry
-
-# your_app/application.ex (we'll fix the child spec soon)
-children = [
-  %{
-    id: CivilBus,
-    start: {CivilBus, :start_link, []}
-  }
-]
-
-opts = [strategy: :one_for_one, name: MagasinData.Supervisor]
-Supervisor.start_link(children, opts)
 ```
 
 For use with EventStore (recommended):
